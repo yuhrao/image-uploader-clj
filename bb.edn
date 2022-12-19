@@ -1,0 +1,2 @@
+{:tasks
+ {build (shell "clojure -A:dev -m shadow.cljs.devtools.cli compile app")}}

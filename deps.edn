@@ -1,0 +1,15 @@
+{:paths   ["src" "resources"]
+ :deps    {org.clojure/clojure {:mvn/version "1.11.1"}
+
+           ring/ring-core {:mvn/version "1.9.6"}
+           ring/ring-jetty-adapter {:mvn/version "1.9.6"}
+           metosin/reitit {:mvn/version "0.5.18"}}
+
+ :aliases {:dev {:extra-paths ["dev"]
+                 :extra-deps {thheller/shadow-cljs {:mvn/version "2.20.15"}
+                              reagent/reagent      {:mvn/version "1.1.1"}
+                              cljsjs/react         {:mvn/version "17.0.2-0"}
+                              cljsjs/react-dom     {:mvn/version "17.0.2-0"}
+                              funcool/promesa      {:mvn/version "10.0.571"}}}
+           :build {:extra-deps {io.github.clojure/tools.build {:git/tag "v0.8.5" :git/sha "9c738da"}}
+                   :ns-default build}}}

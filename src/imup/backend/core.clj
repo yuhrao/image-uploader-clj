@@ -1,4 +1,4 @@
-(ns imup.server.core
+(ns imup.backend.core
   (:gen-class)
   (:require [reitit.ring :as ring]
             [reitit.swagger :as swagger]

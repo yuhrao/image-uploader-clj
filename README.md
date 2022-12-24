@@ -25,7 +25,7 @@ Simple clojure full stack app for file upload using clojure and clojurescript
 ;; Switch your repl to shadow's clojurescript REPL
 (switch-cljs-repl)
 ```
-3. Startup server (go to `imup.server.core` namespace)
+3. Startup server (go to `imup.backend.core` namespace)
 ```clojure
 ;; Start server
 (-main)

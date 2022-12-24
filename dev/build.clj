@@ -20,4 +20,4 @@
   (b/uber {:class-dir class-dir
            :uber-file uber-file
            :basis basis
-           :main 'imup.server.core}))
+           :main 'imup.backend.core}))

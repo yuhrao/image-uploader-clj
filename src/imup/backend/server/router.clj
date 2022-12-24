@@ -1,6 +1,7 @@
 (ns imup.backend.server.router
   (:require [muuntaja.core :as mtj]
             [reitit.dev.pretty :as pretty]
+            [imup.backend.domain.images :as images]
             [reitit.ring :as ring]
             [reitit.ring.middleware.multipart :as multipart]
             [reitit.ring.middleware.muuntaja :as mtj.middleware]
@@ -29,8 +30,11 @@
 
    ["/api"
     ["/images/upload"
+     ;; this [:parameters :multipart] is required for multipart middleware
      {:post {:parameters {:multipart {}}
-             :handler    (fn [req]
+             :handler    (fn [{file-data :multipart-params}]
+                           (images/upload system-map
+                                          file-data)
                            {:status 200})}}]]
 
    ["/assets/*"

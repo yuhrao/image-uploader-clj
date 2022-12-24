@@ -23,6 +23,12 @@
                       {:config {:validatorUrl     nil
                                 :operationsSorter "alpha"}})}}]
 
+   ["/api"
+    ["/images/upload"
+     {:post (fn [req]
+              (tap> req)
+              {:status 200})}]]
+
    ["/app/*"
     (ring/create-file-handler {:root "resources/public"})]])
 

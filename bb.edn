@@ -1,4 +1,6 @@
 {:tasks
  {build (do
           (shell "clojure -A:dev -m shadow.cljs.devtools.cli compile app")
-          (shell "clojure -A:dev -T:build uber"))}}
+          (shell "clojure -A:dev -T:build uber"))
+
+  test (shell "clojure -X:test-runner")}}

@@ -3,4 +3,8 @@
           (shell "clojure -A:dev -m shadow.cljs.devtools.cli compile app")
           (shell "clojure -A:dev -T:build uber"))
 
+  build-fe (shell "clojure -A:dev -m shadow.cljs.devtools.cli compile app")
+  build-be (shell "clojure -A:dev -T:build uber")
+
+
   test (shell "clojure -X:test-runner")}}

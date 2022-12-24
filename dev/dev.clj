@@ -21,7 +21,7 @@
   (imup.backend.core/-main "dev"))
 
 (defn stop-backend []
-  (imup.backend.server.core/stop @imup.backend.core/system))
+  (imup.backend.core/shutdown))
 
 (defn restart-backend []
   (when @imup.backend.core/system
@@ -48,6 +48,16 @@
     (portal/open {:launcher :intellij})
 
     (portal/tap))
+
+
+  (let [node (:xtdb/node @imup.backend.core/system)]
+
+    (xtdb.api/q
+      (xtdb.api/db node)
+      '{:find [(pull ?id [*])]
+                  :where [[?id :xt/id _]]}
+      )
+    )
 
   )
 

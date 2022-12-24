@@ -48,7 +48,8 @@
        clj->js))
 
 (defn main []
-  (r.dom/render [upload-form]
+  (r.dom/render [:<>
+                 [upload-form]]
                 (.getElementById js/document "app"))
   (let [dz (new (.-default Dropzone)
                 "#upload-form"

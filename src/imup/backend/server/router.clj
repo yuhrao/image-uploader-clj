@@ -1,8 +1,10 @@
 (ns imup.backend.server.router
   (:require [muuntaja.core :as mtj]
+            [reitit.dev.pretty :as pretty]
             [reitit.ring :as ring]
             [reitit.ring.middleware.multipart :as multipart]
             [reitit.ring.middleware.muuntaja :as mtj.middleware]
+            [reitit.ring.middleware.parameters :as params.middleware]
             [reitit.swagger :as swagger]
             [reitit.swagger-ui :as swagger-ui]))
 
@@ -25,9 +27,14 @@
 
    ["/api"
     ["/images/upload"
-     {:post (fn [req]
-              (tap> req)
-              {:status 200})}]]
+     {:post {:parameters {:multipart {}}
+             :handler (fn [req]
+                        (tap> req)
+                        (tap> (:parameters req))
+                        {:status 200})}}]]
+
+   ["/assets/*"
+    (ring/create-file-handler {:root "resources/assets"})]
 
    ["/app/*"
     (ring/create-file-handler {:root "resources/public"})]])
@@ -36,8 +43,11 @@
   (ring/routes
     (ring/create-default-handler)))
 
-(def route-config {:data {:muuntaja   mtj/instance
+(def route-config {:exception pretty/exception
+                   :data {:muuntaja   mtj/instance
                           :middleware [swagger/swagger-feature
+
+                                       params.middleware/parameters-middleware
 
                                        mtj.middleware/format-negotiate-middleware
                                        mtj.middleware/format-response-middleware
@@ -47,7 +57,7 @@
 
 (defn create-router [sys-map]
   (assoc sys-map
-    :server/router {:router (ring/router
-                              (create-routes sys-map)
-                              route-config)
+    :server/router {:router      (ring/router
+                                   (create-routes sys-map)
+                                   route-config)
                     :ring-routes ring-routes}))

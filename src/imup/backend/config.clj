@@ -1,10 +1,17 @@
 (ns imup.backend.config)
 
 (defn- server-opts [env]
-  (condp = env
-    "dev" {:port  3000
-           :join? false}
-    "prod" {:port 8080}))
+  (if (contains? #{"dev" "test"} env)
+    {:port  3000
+     :join? false}
+    {:port 8080}))
+
+(defn- aws-opts [env]
+  (if (contains? #{"dev" "test"} env)
+    {:bucket-name "dev.image.uploader.app"}
+    {:bucket-name (System/getenv "S3_BUCKET_NAME")}))
 
 (defn initialize [env]
-  {:server/opts (server-opts env)})
+  {:app/env env
+   :server/opts (server-opts env)
+   :aws/opts    (aws-opts env)})

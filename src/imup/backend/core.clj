@@ -8,7 +8,12 @@
             [muuntaja.core :as mtj]
             [ring.adapter.jetty :as jetty]))
 
-(def routes [["/swagger.json"
+(def routes [["/"
+              {:get {:no-doc true
+                     :handler (fn [_]
+                               {:status  301
+                                :headers {"Location" "/app/index.html"}})}}]
+             ["/swagger.json"
               {:get {:no-doc  true
                      :swagger {:info        "Imup"
                                :description "API to upload files"}

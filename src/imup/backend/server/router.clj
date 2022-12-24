@@ -8,7 +8,9 @@
             [reitit.swagger :as swagger]
             [reitit.swagger-ui :as swagger-ui]))
 
-(defn- create-routes [_config]
+(defn- create-routes [{{assets-path :path}             :assets/opts
+                       {web-page-path :resources-path} :web/opts
+                       :as system-map}]
   [["/"
     {:get {:no-doc  true
            :handler (constantly
@@ -28,32 +30,30 @@
    ["/api"
     ["/images/upload"
      {:post {:parameters {:multipart {}}
-             :handler (fn [req]
-                        (tap> req)
-                        (tap> (:parameters req))
-                        {:status 200})}}]]
+             :handler    (fn [req]
+                           {:status 200})}}]]
 
    ["/assets/*"
-    (ring/create-file-handler {:root "resources/assets"})]
+    (ring/create-file-handler {:root assets-path})]
 
    ["/app/*"
-    (ring/create-file-handler {:root "resources/public"})]])
+    (ring/create-file-handler {:root web-page-path})]])
 
 (def ring-routes
   (ring/routes
     (ring/create-default-handler)))
 
 (def route-config {:exception pretty/exception
-                   :data {:muuntaja   mtj/instance
-                          :middleware [swagger/swagger-feature
+                   :data      {:muuntaja   mtj/instance
+                               :middleware [swagger/swagger-feature
 
-                                       params.middleware/parameters-middleware
+                                            params.middleware/parameters-middleware
 
-                                       mtj.middleware/format-negotiate-middleware
-                                       mtj.middleware/format-response-middleware
-                                       mtj.middleware/format-request-middleware
+                                            mtj.middleware/format-negotiate-middleware
+                                            mtj.middleware/format-response-middleware
+                                            mtj.middleware/format-request-middleware
 
-                                       multipart/multipart-middleware]}})
+                                            multipart/multipart-middleware]}})
 
 (defn create-router [sys-map]
   (assoc sys-map

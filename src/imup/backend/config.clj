@@ -6,12 +6,10 @@
      :join? false}
     {:port 8080}))
 
-(defn- aws-opts [env]
-  (if (contains? #{"dev" "test"} env)
-    {:bucket-name "dev.image.uploader.app"}
-    {:bucket-name (System/getenv "S3_BUCKET_NAME")}))
-
 (defn initialize [env]
-  {:app/env env
+  {:app/env     env
    :server/opts (server-opts env)
-   :aws/opts    (aws-opts env)})
+   :web/opts    {:resources-path (or (System/getenv "WEB_RESOURCES_PATH")
+                                     "resources/public")}
+   :assets/opts {:path (or (System/getenv "ASSETS_PATH")
+                           "resources/assets")}})

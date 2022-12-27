@@ -13,7 +13,7 @@
        first
        clj->js))
 
-(defn setup-dropzone-events [dz]
+(defn setup-dropzone-events [dz on-upload-finish]
   (.on dz "complete" (fn [file]
                        (let [result (-> file
                                         (.-xhr)
@@ -21,12 +21,11 @@
                                         (js/JSON.parse)
                                         (js->clj :keywordize-keys true))]
                          (js/console.log "complete")
-                         (println result)
 
-                         (swap! images conj result)
+                         (on-upload-finish result)
                          (.removeFile dz file)))))
 
-(defn setup-dropzone! [dropzone-atom]
+(defn setup-dropzone [{:keys [on-upload-finish]}]
   (let [dz (new (.-default Dropzone)
                 "#upload-form"
                 #js{:url              "/api/images/upload"
@@ -37,5 +36,5 @@
                     :acceptedFiles    "image/*"
                     :addRemoveLinks   true
                     :params           params})]
-    (reset! dropzone-atom dz)
-    (setup-dropzone-events dz)))
+    (setup-dropzone-events dz on-upload-finish)
+    dz))

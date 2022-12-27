@@ -31,6 +31,7 @@
 (comment
   ;; Start shadow tooling and watch frontend build
   (stop-shadow)
+
   (start-shadow)
 
   (switch-cljs-repl)

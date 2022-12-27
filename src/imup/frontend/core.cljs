@@ -4,7 +4,7 @@
             [reagent.core :as r.core]))
 
 (defonce dropzone (r.core/atom nil))
-
+(defonce images (r.core/atom []))
 
 (defn upload-form []
   [:div
@@ -34,8 +34,6 @@
   )
 (defn params [files xhr _chunk]
   (reset! debug files)
-  (js/console.log "params")
-  (js/console.log files)
 
   (->> files
        (map (fn [f]
@@ -56,12 +54,23 @@
                 #js{:url              "/api/images/upload"
                     :maxFileSize      100000
                     :maxFiles         5
+                    :parallelUploads  5
                     :autoProcessQueue false
                     :acceptedFiles    "image/*"
                     :addRemoveLinks   true
                     :params           params})]
-    (reset! dropzone dz)))
+    (reset! dropzone dz)
+    (.on dz "complete" (fn [file]
+                         (let [result (-> file
+                                          (.-xhr)
+                                          (.-response)
+                                          (js/JSON.parse)
+                                          (js->clj :keywordize-keys true))]
+                           (js/console.log "complete")
+                           (println result)
 
+                           (swap! images conj result)
+                           (.removeFile dz file))))))
 
 (defn ^:dev/after-load hot-reload []
   (main))

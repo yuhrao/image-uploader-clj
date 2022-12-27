@@ -21,17 +21,16 @@
   (imup.backend.core/-main "dev"))
 
 (defn stop-backend []
-  (imup.backend.core/shutdown))
+  (when-let [sys @imup.backend.core/system]
+    (imup.backend.core/shutdown sys)))
 
 (defn restart-backend []
-  (when @imup.backend.core/system
-    (stop-backend))
+  (stop-backend)
   (start-backend))
 
 (comment
   ;; Start shadow tooling and watch frontend build
   (stop-shadow)
-
   (start-shadow)
 
   (switch-cljs-repl)
@@ -54,10 +53,9 @@
 
     (xtdb.api/q
       (xtdb.api/db node)
-      '{:find [(pull ?id [*])]
-                  :where [[?id :xt/id _]]}
-      )
-    )
+      '{:find  [(pull ?id [*])]
+        :where [[?id :xt/id _]]}
+      ))
 
   )
 

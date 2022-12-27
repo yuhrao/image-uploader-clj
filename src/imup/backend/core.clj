@@ -12,10 +12,12 @@
       (update :xtdb/node #(.close %))
       server.core/stop))
 
+(defn start [env]
+  (-> env
+      config/initialize
+      db/init
+      server.core/start
+      server.router/ring-routes))
+
 (defn -main [& [env]]
-  (let [-sys (-> (config/initialize env)
-                 db/init
-                 server.router/create-router
-                 server.core/handler
-                 server.core/start)]
-    (reset! system -sys)))
+  (reset! system (start env)))

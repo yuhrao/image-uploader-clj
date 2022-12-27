@@ -25,12 +25,16 @@ Simple clojure full stack app for file upload using clojure and clojurescript
 ;; Switch your repl to shadow's clojurescript REPL
 (switch-cljs-repl)
 ```
+
 3. Startup server (go to `imup.backend.core` namespace)
 ```clojure
-;; Start server
-(-main)
-```
+(start-backend)
 
+(stop-backend)
+
+(restart-backend)
+
+```
 
 Now you can access the application from both `http://localhost:3000`
 (reitit server provides the web UI) or `http://localhost:8080`

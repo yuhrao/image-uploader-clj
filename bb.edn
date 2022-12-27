@@ -1,10 +1,11 @@
 {:tasks
- {build (do
-          (shell "clojure -A:dev -m shadow.cljs.devtools.cli compile app")
-          (shell "clojure -A:dev -T:build uber"))
+ {build      (do
+               (shell "clojure -A:dev -m shadow.cljs.devtools.cli compile app")
+               (shell "clojure -A:dev -T:build uber"))
 
-  build-fe (shell "clojure -A:dev -m shadow.cljs.devtools.cli compile app")
-  build-be (shell "clojure -A:dev -T:build uber")
+  build-fe   (shell "clojure -A:dev -m shadow.cljs.devtools.cli compile app")
+  build-be   (shell "clojure -A:dev -T:build uber")
 
 
-  test (shell "clojure -X:test-runner")}}
+  test       (shell "clojure -X:test-runner")
+  test-watch (shell "clojure -X:test-runner :fail-fast? false :watch? true")}}

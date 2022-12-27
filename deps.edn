@@ -15,8 +15,10 @@
                                        cljsjs/react-dom     {:mvn/version "17.0.2-0"}
                                        funcool/promesa      {:mvn/version "10.0.571"}}}
            :test        {:extra-paths ["test"]
-                         :extra-deps  {lambdaisland/kaocha {:mvn/version "1.71.1119"}}}
-           :test-runner {:extra-deps {lambdaisland/kaocha {:mvn/version "1.71.1119"}}
+                         :extra-deps  {lambdaisland/kaocha {:mvn/version "1.71.1119"}
+                                       clj-http/clj-http   {:mvn/version "3.12.3"}}}
+           :test-runner {:extra-deps {lambdaisland/kaocha {:mvn/version "1.71.1119"}
+                                      clj-http/clj-http   {:mvn/version "3.12.3"}}
                          :exec-fn    kaocha.runner/exec-fn
                          :exec-args  {}}
            :build       {:extra-deps {io.github.clojure/tools.build {:git/tag "v0.8.5" :git/sha "9c738da"}}

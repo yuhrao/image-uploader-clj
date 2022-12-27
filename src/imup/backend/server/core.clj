@@ -19,5 +19,7 @@
                                   (assoc opts
                                     :host "0.0.0.0"))))
 
-(defn stop [{^Server server :server/instance}]
-  (.stop server))
+(defn stop [{^Server server :server/instance
+             :as sys-map}]
+  (.stop server)
+  sys-map)

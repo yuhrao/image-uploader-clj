@@ -11,7 +11,7 @@
 
 (defn- create-routes [{{assets-path :path}             :assets/opts
                        {web-page-path :resources-path} :web/opts
-                       :as system-map}]
+                       :as                             system-map}]
   [["/"
     {:get {:no-doc  true
            :handler (constantly
@@ -33,9 +33,9 @@
      ;; this [:parameters :multipart] is required for multipart middleware
      {:post {:parameters {:multipart {}}
              :handler    (fn [{file-data :multipart-params}]
-                           (images/upload system-map
-                                          file-data)
-                           {:status 200})}}]]
+                           {:status 200
+                            :body   (images/upload system-map
+                                                   file-data)})}}]]
 
    ["/assets/*"
     (ring/create-file-handler {:root assets-path})]

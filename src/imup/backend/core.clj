@@ -7,17 +7,18 @@
 
 (defonce system (atom nil))
 
-(defn shutdown []
-  (-> @system
-      (update :xtdb/node #(.close %))
-      server.core/stop))
+(defn shutdown [sys-map]
+  (-> sys-map
+      server.core/stop
+      (update :xtdb/node #(.close %))))
 
 (defn start [env]
   (-> env
       config/initialize
       db/init
-      server.core/start
-      server.router/ring-routes))
+      server.router/create-router
+      server.core/handler
+      server.core/start))
 
 (defn -main [& [env]]
   (reset! system (start env)))

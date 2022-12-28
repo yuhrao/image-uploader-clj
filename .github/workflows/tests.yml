@@ -35,7 +35,7 @@ jobs:
           restore-keys: cljdeps-
 
       - name: Debug #1
-        run: ls -la ./resources
+        run: ls -la ./resources/assets && ls -la
 
       - name: Run tests
         run: bb test

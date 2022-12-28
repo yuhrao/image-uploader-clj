@@ -56,12 +56,6 @@
     (t/testing "database entity"
       (let [node (:xtdb/node test-utils/*test-system*)
             entity (xtdb/entity (xtdb/db node) (parse-uuid (:id body)))]
-        (prn body)
-        (prn entity)
-        (prn (xtdb.api/q
-               (xtdb.api/db node)
-               '{:find  [(pull ?id [*])]
-                 :where [[?id :xt/id _]]}))
         (t/is (= (:type file-data) (:image/type entity)))
         (t/is (= (:id body) (str (:xt/id entity))))
         (t/is (= (:name file-data) (:image/name entity)))))
@@ -103,15 +97,13 @@
                  {:name "image3.gif"
                   :type "image/gif"}]
         _ (doseq [sample samples]
-            (prn sample)
-            (prn (create-image test-utils/*test-system* sample)))
+            (create-image test-utils/*test-system* sample))
 
         {:keys [status body]}
         (-> (http/get (str server-host "/api/images"))
             (update :body (fn [b] (when-not (empty? b)
                                     (json/read-str b :key-fn keyword)))))]
 
-    (prn body)
     (t/is (= 200 status))
     (t/is (= (count samples) (count body)))
     (let [required-fields #{:id :name :path :type :width :height :size :description}]

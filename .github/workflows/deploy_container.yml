@@ -8,17 +8,7 @@ on:
 jobs:
   test-application:
     name: "Test app"
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
-
-      - name: list actions
-        run: ls -la .github/workflows
-
-      - name: "Runnign tests"
-        uses: .github/workflows/tests
+    uses: .github/workflows/tests
 
   build-image:
     name: Build Container Image

@@ -13,7 +13,7 @@
        first
        clj->js))
 
-(defn setup-dropzone-events [dz on-upload-finish]
+(defn setup-dropzone-events [^Dropzone dz on-upload-finish]
   (.on dz "complete" (fn [file]
                        (let [result (-> file
                                         (.-xhr)

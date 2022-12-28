@@ -1,5 +1,6 @@
 (ns imup.frontend.core
   (:require [imup.frontend.api.dropzone :as dropzone]
+            ["dropzone" :as Dropzone]
             [imup.frontend.components.file-input :as file-input]
             [imup.frontend.components.images-list :as images-list]
             [reagent.core :as r.core]
@@ -23,12 +24,12 @@
   (swap! uploaded-images conj result))
 
 (defn app []
-  [:div {:class "container p-4"}
-   [:h1 {:class "sm:text-center lg:text-left text-4xl font-bold mb-4"}
+  [:div {:class "container p-4 mx-auto"}
+   [:h1 {:class "text-center lg:text-left text-4xl font-bold mb-4"}
     "Image uploader"]
 
    [file-input/upload-form {:on-submit (fn []
-                                         (.processQueue @dz))}]
+                                         (.processQueue ^Dropzone @dz))}]
 
    [:hr {:class "my-4 border-2 border-slate-200"}]
    [images-list/images-list {:images @uploaded-images}]])

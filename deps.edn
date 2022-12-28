@@ -9,11 +9,10 @@
            com.xtdb/xtdb-rocksdb   {:mvn/version "1.22.1"}}
 
  :aliases {:dev         {:extra-paths ["dev"]
-                         :extra-deps  {thheller/shadow-cljs {:mvn/version "2.20.15"}
+                         :extra-deps  {thheller/shadow-cljs {:mvn/version "2.20.16"}
                                        reagent/reagent      {:mvn/version "1.1.1"}
-                                       cljsjs/react         {:mvn/version "17.0.2-0"}
-                                       cljsjs/react-dom     {:mvn/version "17.0.2-0"}
-                                       funcool/promesa      {:mvn/version "10.0.571"}}}
+                                       cljsjs/react         {:mvn/version "18.2.0-1"}
+                                       cljsjs/react-dom     {:mvn/version "18.2.0-1"}}}
            :test        {:extra-paths ["test"]
                          :extra-deps  {lambdaisland/kaocha {:mvn/version "1.71.1119"}
                                        clj-http/clj-http   {:mvn/version "3.12.3"}}}
@@ -21,5 +20,5 @@
                                       clj-http/clj-http   {:mvn/version "3.12.3"}}
                          :exec-fn    kaocha.runner/exec-fn
                          :exec-args  {}}
-           :build       {:extra-deps {io.github.clojure/tools.build {:git/tag "v0.8.5" :git/sha "9c738da"}}
+           :build       {:extra-deps {io.github.clojure/tools.build {:git/tag "v0.9.0" :git/sha "8c93e0c"}}
                          :ns-default build}}}

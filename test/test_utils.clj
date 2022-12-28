@@ -18,10 +18,13 @@
       (delete-directory-recursive dir))))
 
 (defn xtdb-cleanup-fixture [form]
-  (delete-xtdb-cache ".xtdb/test")
+  (tap> {:deleting (:xtdb/cache-path *test-system*)})
+
+  (delete-xtdb-cache (:xtdb/cache-path *test-system*))
   (form))
 
 (defn system-fixture [form]
+  (delete-xtdb-cache ".xtdb/test")
   (binding [*test-system* (backend/start "test")]
     (try
       (form)

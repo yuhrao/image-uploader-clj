@@ -11,7 +11,9 @@
     {:port 8080}))
 
 (defn initialize [env]
-  (let [xtdb-base-path (cond-> (str ".xtdb/" env)
+  (let [xtdb-base-path
+        (str ".xtdb/" env)
+        #_(cond-> (str ".xtdb/" env)
 
                                (= env "test")
                                (str "/" (random-uuid)))]

@@ -1,6 +1,7 @@
 name: deploy-container
 run-name: "Deploy Container"
 on:
+  workflow_dispatch:
   push:
     tags: [ 'v*.*.*' ]
 

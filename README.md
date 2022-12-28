@@ -12,7 +12,6 @@ Simple clojure full stack app for file upload using clojure and clojurescript
 
 ### Clojurescript
 - Reagent
-- Re-frame
 
 ## Development guide
 

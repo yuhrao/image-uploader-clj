@@ -36,6 +36,3 @@ jobs:
         with:
           tags: yuhribernardes/image-uploader-clj:${{ steps.get-latest-tag.outputs.tag }}
           push: true
-
-  deploy-container:
-    needs: [ build-image ]

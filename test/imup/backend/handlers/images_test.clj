@@ -53,7 +53,7 @@
       (t/is (= (:name file-data) (:name body))))
     (t/testing "database entity"
       (let [node (:xtdb/node test-utils/*test-system*)
-            entity (xtdb/pull (xtdb/db node) '[*] (parse-uuid (:id body)))]
+            entity (xtdb/entity (xtdb/db node) (parse-uuid (:id body)))]
         (prn body)
         (prn entity)
         (prn (xtdb.api/q

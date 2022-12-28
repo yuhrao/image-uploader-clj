@@ -1,5 +1,6 @@
 (ns test-utils
   (:require [imup.backend.core :as backend]
+            [xtdb.api :as xtdb]
             [clojure.java.io :as io]))
 
 (def ^:dynamic *test-system* {})
@@ -18,10 +19,22 @@
       (delete-directory-recursive dir))))
 
 (defn xtdb-cleanup-fixture [form]
-  (tap> {:deleting (:xtdb/cache-path *test-system*)})
+  (form)
+  (let [node (:xtdb/node *test-system*)]
 
-  (delete-xtdb-cache (:xtdb/cache-path *test-system*))
-  (form))
+    (->> (xtdb.api/q
+           (xtdb.api/db node)
+           '{:find  [(pull ?id [*])]
+             :where [[?id :xt/id _]]}
+           )
+         (mapcat identity)
+         (map :xt/id)
+         (map (fn [id]
+                  [::xtdb/evict id]))
+         (into [])
+         (xtdb/submit-tx node)))
+
+  )
 
 (defn system-fixture [form]
   (delete-xtdb-cache ".xtdb/test")

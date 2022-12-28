@@ -16,7 +16,6 @@
     (with-open [in (io/input-stream tmp-file)
                 out (io/output-stream (io/file target-path))]
       (io/copy in out))
-    (tap> file-data)
     (let [db-entity {:xt/id             image-id
                      :image/path        (str "/assets/" target-name)
                      :image/size        (Integer/parseInt (file-data "size"))

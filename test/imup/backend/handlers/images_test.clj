@@ -54,6 +54,7 @@
     (t/testing "database entity"
       (let [node (:xtdb/node test-utils/*test-system*)
             entity (xtdb/pull (xtdb/db node) '[*] (parse-uuid (:id body)))]
+        (prn body)
         (prn entity)
         (prn (xtdb.api/q
                (xtdb.api/db node)

@@ -14,10 +14,6 @@
 
 (def sample-image-path "test/assets/clojure_logo.png")
 
-(defonce dbg (atom nil))
-
-
-
 (t/deftest upload-image
   (let [image (io/file sample-image-path)
         server-host (str "http://localhost:"
@@ -52,7 +48,6 @@
     (t/testing "database entity"
       (let [node (:xtdb/node test-utils/*test-system*)
             entity (xtdb/pull (xtdb/db node) '[*] (parse-uuid (:id body)))]
-        (tap> {:entity entity})
         (t/is (= (:type file-data) (:image/type entity)))
         (t/is (= (:id body) (str (:xt/id entity))))
         (t/is (= (:name file-data) (:image/name entity)))))

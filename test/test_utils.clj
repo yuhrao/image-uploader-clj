@@ -19,7 +19,6 @@
       (delete-directory-recursive dir))))
 
 (defn xtdb-cleanup-fixture [form]
-  (form)
   (let [node (:xtdb/node *test-system*)]
 
     (->> (xtdb.api/q
@@ -30,11 +29,11 @@
          (mapcat identity)
          (map :xt/id)
          (map (fn [id]
-                  [::xtdb/evict id]))
+                [::xtdb/evict id]))
          (into [])
          (xtdb/submit-tx node)))
 
-  )
+  (form))
 
 (defn system-fixture [form]
   (delete-xtdb-cache ".xtdb/test")

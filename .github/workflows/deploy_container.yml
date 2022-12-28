@@ -2,8 +2,7 @@ name: deploy-container
 run-name: "Deploy Container"
 on:
   push:
-    branches: [ main ]
-#    tags: [ 'v*.*.*' ]
+    tags: [ 'v*.*.*' ]
 
 jobs:
   build-image:

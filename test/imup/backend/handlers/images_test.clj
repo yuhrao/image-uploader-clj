@@ -10,7 +10,7 @@
     [xtdb.api :as xtdb])
   (:import (org.apache.http.entity.mime HttpMultipartMode)))
 
-(t/use-fixtures :once test-utils/xtdb-cleanup-fixture)
+;(t/use-fixtures :once test-utils/xtdb-cleanup-fixture)
 (t/use-fixtures :each test-utils/system-fixture)
 
 (def sample-image-path "test/assets/clojure_logo.png")

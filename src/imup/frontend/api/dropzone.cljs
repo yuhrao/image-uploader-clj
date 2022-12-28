@@ -5,11 +5,13 @@
 (defn params [files _xhr _chunk]
   (->> files
        (map (fn [f]
-              #js {:name   (.-name f)
-                   :type   (.-type f)
-                   :width  (.-width f)
-                   :height (.-height f)
-                   :size   (.-size f)}))
+              (let [image-description (js/prompt (str "Provide a description for image: " (.-name f)))]
+                #js {:name        (.-name f)
+                     :description image-description
+                     :type        (.-type f)
+                     :width       (.-width f)
+                     :height      (.-height f)
+                     :size        (.-size f)})))
        first
        clj->js))
 
@@ -20,7 +22,6 @@
                                         (.-response)
                                         (js/JSON.parse)
                                         (js->clj :keywordize-keys true))]
-                         (js/console.log "complete")
 
                          (on-upload-finish result)
                          (.removeFile dz file)))))

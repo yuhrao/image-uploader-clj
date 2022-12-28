@@ -8,7 +8,11 @@
 (defn list-item [{id :id
                   path :path
                   img-name :name
-                  img-type :type}]
+                  img-type :type
+                  description :description
+                  size :size
+                  width :width
+                  height :height}]
   [:div {:class "flex flex-row items-center gap-x-3"
          :key id}
    [:img {:class "max-w-sm"
@@ -18,7 +22,10 @@
      [:p {:class "font-semibold"}
       img-name]
      [:span {:class "text-xs text-gray-500"}
-      img-type]]
+      (str width "x" height " | " (mod size 1000) "Kb" " | " img-type)]]
+    [:p (if description
+          description
+          "No description")]
     [:a {:class "transition-all rounded px-2 py-1 text-center font-bold hover:bg-sky-600 bg-sky-500 text-white"
          :href path :download img-name} "DOWNLOAD"]]])
 

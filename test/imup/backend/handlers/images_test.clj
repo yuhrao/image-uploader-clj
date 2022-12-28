@@ -3,6 +3,7 @@
     [clj-http.client :as http]
     [clojure.data.json :as json]
     [clojure.java.io :as io]
+    [clojure.set :as set]
     [clojure.string :as string]
     [clojure.test :as t]
     [test-utils :as test-utils]
@@ -19,14 +20,16 @@
                          (-> test-utils/*test-system*
                              :server/opts
                              :port))
-        file-data {:file   image
-                   :name   "clojure_logo.png"
-                   :size   (str (.length ^java.io.File image))
-                   :width  "123"
-                   :height "456"
-                   :type   "image/png"}
+        file-data {:file        image
+                   :name        "clojure_logo.png"
+                   :size        (str (.length ^java.io.File image))
+                   :description "My file description"
+                   :width       "123"
+                   :height      "456"
+                   :type        "image/png"}
         multipart-params (->> file-data
                               (map (fn [[k v]] {:name (name k) :content v})))
+
         {:keys [status body]}
         (-> (http/post
               (str server-host "/api/images/upload")
@@ -43,6 +46,10 @@
       (t/is (= (:type file-data) (:type body)))
       (t/is (and (contains? body :path)
                  (not (empty? (:path body)))))
+      (t/is (= (:description file-data) (:description body)))
+      (t/is (= (:size file-data) (str (:size body))))
+      (t/is (= (:width file-data) (str (:width body))))
+      (t/is (= (:height file-data) (str (:height body))))
       (t/is (= (:name file-data) (:name body))))
     (t/testing "database entity"
       (let [node (:xtdb/node test-utils/*test-system*)
@@ -67,14 +74,15 @@
                                        img-type :type}]
   (xtdb/submit-tx
     node
-    [[::xtdb/put {:xt/id        (random-uuid)
-                  :image/name   img-name
-                  :image/type   img-type
-                  :image/path   (str "/assets/" img-name)
-                  :image/width  (rand-int 1000)
-                  :image/height (rand-int 1000)}]]))
-(t/deftest list-images
+    [[::xtdb/put {:xt/id             (random-uuid)
+                  :image/name        img-name
+                  :image/type        img-type
+                  :image/path        (str "/assets/" img-name)
+                  :image/description (str "Description for " img-name)
+                  :image/width       (rand-int 1000)
+                  :image/height      (rand-int 1000)}]]))
 
+(t/deftest list-images
   (let [server-host (str "http://localhost:"
                          (-> test-utils/*test-system*
                              :server/opts
@@ -94,8 +102,11 @@
             (update :body (fn [b] (when-not (empty? b)
                                     (json/read-str b :key-fn keyword)))))]
 
-    (tap> {:sample samples
-           :body   body})
     (t/is (= 200 status))
     (t/is (= (count samples) (count body)))
-    (t/is (every? #(contains? % :id) body))))
+    (let [required-fields #{:id :name :path :type :width :height :size :description}]
+      (t/is (->> body
+                 (map keys)
+                 (map set)
+                 (map #(set/subset? % required-fields))
+                 (every? true?))))))

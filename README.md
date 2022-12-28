@@ -2,6 +2,7 @@
 
 [![wakatime](https://wakatime.com/badge/user/c71c63dd-80b0-4866-9efa-d5cb7ae83bfb/project/8b2a85ec-363e-4efe-bec8-92f799c9c634.svg)](https://wakatime.com/badge/user/c71c63dd-80b0-4866-9efa-d5cb7ae83bfb/project/8b2a85ec-363e-4efe-bec8-92f799c9c634)
 [![run-tests](https://github.com/yuhrao/image-uploader-clj/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/yuhrao/image-uploader-clj/actions/workflows/tests.yml)
+![Docker Image Version (latest semver)](https://img.shields.io/docker/v/yuhribernardes/image-uploader-clj?logo=docker&sort=semver)
 
 Simple clojure full stack app for file upload using clojure and clojurescript
 

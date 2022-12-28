@@ -5,8 +5,16 @@ on:
     tags: [ 'v*.*.*' ]
 
 jobs:
+  test-application:
+    name: "Test app"
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Runnign tests"
+        uses: ./.github/workflows/tests.yml
+
   build-image:
     name: Build Container Image
+    needs: test-application
 
     runs-on: ubuntu-latest
     permissions:

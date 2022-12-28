@@ -32,5 +32,8 @@ jobs:
             ~/.deps.clj
           key: cljdeps-${{ hashFiles('deps.edn', 'bb.edn') }}
           restore-keys: cljdeps-
+      - name: Debug #1
+        run: ls -la ./resources
+
       - name: Run tests
         run: bb test

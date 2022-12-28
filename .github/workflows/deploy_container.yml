@@ -13,15 +13,13 @@ jobs:
         uses: actions/checkout@v3
 
       - name: "Runnign tests"
-        uses: ./.github/workflows/tests.yml
+        uses: yuhrao/image-uploader-clj/.github/workflows/tests.yml
 
   build-image:
     name: Build Container Image
     needs: test-application
 
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
 
     steps:
       - name: Checkout repo

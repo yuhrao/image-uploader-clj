@@ -1,5 +1,6 @@
 (ns imup.frontend.core
   (:require [imup.frontend.api.dropzone :as dropzone]
+            [imup.frontend.api.images :as images.api]
             ["dropzone" :as Dropzone]
             [imup.frontend.components.file-input :as file-input]
             [imup.frontend.components.images-list :as images-list]
@@ -24,6 +25,9 @@
    [images-list/images-list {:images @uploaded-images}]])
 
 (defn main []
+  (.then (images.api/fetch-images)
+         (fn [images]
+           (reset! uploaded-images images)))
   (r.dom/render
     [app]
     (.getElementById js/document "app"))

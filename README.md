@@ -47,7 +47,7 @@ Now you can access the application from both `http://localhost:3000`
 1. Build the app
 ```shell
 # Using babashka
-bb build
+bb build-local
 
 # Manually
 clojure -A:dev -m shadow.cljs.devtools.cli compile app && \
@@ -63,7 +63,10 @@ java -jar ./target/imup-1.0.0-standalone.jar
 
 ```shell
 # Building the image and running-locally
+# you can also use bb build-container
 docker build -t image-uploader-clj:local .
+
+# you can also use bb start-container
 docker run -p 3000:8080 image-uploader-clj:local
 
 # Running from docker hub

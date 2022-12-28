@@ -5,7 +5,7 @@
 (def version "1.0.0")
 (def class-dir "target/classes")
 (def basis (b/create-basis {:project "deps.edn"}))
-(def uber-file (format "target/imup-%s.jar" version))
+(def uber-file "target/imup.jar")
 
 (defn clean [_]
   (b/delete {:path "target"}))

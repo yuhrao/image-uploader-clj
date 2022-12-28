@@ -14,7 +14,8 @@
   (io/delete-file file))
 (defn- delete-xtdb-cache [cache-path]
   (let [dir (io/file cache-path)]
-    (delete-directory-recursive dir)))
+    (when (.exists dir)
+      (delete-directory-recursive dir))))
 
 (defn xtdb-cleanup-fixture [form]
   (delete-xtdb-cache ".xtdb/test")

@@ -102,13 +102,17 @@
                  {:name "image3.gif"
                   :type "image/gif"}]
         _ (doseq [sample samples]
-            (create-image test-utils/*test-system* sample))
+            (tap> {:message "Creating image"
+                   :image sample})
+            (prn sample)
+            (prn (create-image test-utils/*test-system* sample)))
 
         {:keys [status body]}
         (-> (http/get (str server-host "/api/images"))
             (update :body (fn [b] (when-not (empty? b)
                                     (json/read-str b :key-fn keyword)))))]
 
+    (prn body)
     (t/is (= 200 status))
     (t/is (= (count samples) (count body)))
     (let [required-fields #{:id :name :path :type :width :height :size :description}]

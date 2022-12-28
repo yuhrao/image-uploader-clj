@@ -32,8 +32,7 @@
     [app]
     (.getElementById js/document "app"))
   ;; It needs to be called after the component is rendered
-  (when-not @dz
-    (reset! dz (dropzone/setup-dropzone {:on-upload-finish on-upload-finish}))))
+  (reset! dz (dropzone/setup-dropzone {:on-upload-finish on-upload-finish})))
 
 (defn ^:dev/after-load hot-reload []
   (main))

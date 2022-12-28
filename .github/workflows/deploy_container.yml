@@ -9,6 +9,9 @@ jobs:
     name: "Test app"
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
       - name: "Runnign tests"
         uses: ./.github/workflows/tests.yml
 

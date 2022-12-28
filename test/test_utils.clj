@@ -12,14 +12,17 @@
     (run! delete-directory-recursive (.listFiles file)))
 
   (io/delete-file file))
-(defn- delete-xtdb-cache [{base-path :xtdb/cache-path}]
-  (let [dir (io/file base-path)]
+(defn- delete-xtdb-cache [cache-path]
+  (let [dir (io/file cache-path)]
     (delete-directory-recursive dir)))
+
+(defn xtdb-cleanup-fixture [form]
+  (form)
+  (delete-xtdb-cache ".xtdb/test"))
 
 (defn system-fixture [form]
   (binding [*test-system* (backend/start "test")]
     (try
       (form)
       (finally
-        (backend/shutdown *test-system*)
-        (delete-xtdb-cache *test-system*)))))
+        (backend/shutdown *test-system*)))))

@@ -11,6 +11,7 @@
   (:import (org.apache.http.entity.mime HttpMultipartMode)))
 
 (t/use-fixtures :each test-utils/system-fixture)
+(t/use-fixtures :once test-utils/xtdb-cleanup-fixture)
 
 (def sample-image-path "test/assets/clojure_logo.png")
 

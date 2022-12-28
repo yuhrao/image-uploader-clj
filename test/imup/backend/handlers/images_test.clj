@@ -55,6 +55,10 @@
       (let [node (:xtdb/node test-utils/*test-system*)
             entity (xtdb/pull (xtdb/db node) '[*] (parse-uuid (:id body)))]
         (prn entity)
+        (prn (xtdb.api/q
+               (xtdb.api/db node)
+               '{:find  [(pull ?id [*])]
+                 :where [[?id :xt/id _]]}))
         (t/is (= (:type file-data) (:image/type entity)))
         (t/is (= (:id body) (str (:xt/id entity))))
         (t/is (= (:name file-data) (:image/name entity)))))

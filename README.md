@@ -17,6 +17,7 @@ Simple clojure full stack app for file upload using clojure and clojurescript
 
 ## Development guide
 
+Access the app in your browser from `http://localhost:3000` after start the application
 ### Running locally
 
 1. Start your REPL
@@ -35,7 +36,6 @@ Simple clojure full stack app for file upload using clojure and clojurescript
 (stop-backend)
 
 (restart-backend)
-
 ```
 
 Now you can access the application from both `http://localhost:3000`
@@ -59,9 +59,23 @@ clojure -A:dev -T:build uber
 java -jar ./target/imup-1.0.0-standalone.jar
 ```
 
-Access the app in your browser from `http://localhost:3000`
-
 3. From a docker file
 
-[//]: # (TODO: Dockerfile to run the app)
-[//]: # (TODO: Dockerfile to run tests)
+```shell
+# Building the image and running-locally
+docker build -t image-uploader-clj:local .
+docker run -p 3000:8080 image-uploader-clj:local
+
+# Running from docker hub
+docker run -p 3000:8080 yuhribernardes/image-uploader-clj:latest
+```
+
+## Running tests
+
+```shell
+# Using babashka
+bb test
+
+# Using clojure cli
+clojure -X:test-runner
+```

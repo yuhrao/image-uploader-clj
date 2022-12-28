@@ -24,6 +24,7 @@ jobs:
         with:
           cli: "1.11.1.1200"
           bb: "0.9.162"
+
       - name: Cache clojure dependencies
         uses: actions/cache@v3
         with:
@@ -32,6 +33,7 @@ jobs:
             ~/.deps.clj
           key: cljdeps-${{ hashFiles('deps.edn', 'bb.edn') }}
           restore-keys: cljdeps-
+
       - name: Debug #1
         run: ls -la ./resources
 

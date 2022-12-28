@@ -28,8 +28,8 @@ jobs:
           cli: "1.11.1.1200"
           bb: "0.9.162"
 
-      - name: Run tests
-        run: bb test
+      - name: Fetch dependencies
+        run: clojure -A:dev prep
 
       - name: Cache clojure dependencies
         uses: actions/cache@v3
@@ -39,3 +39,6 @@ jobs:
             ~/.deps.clj
           key: cljdeps-${{ hashFiles('deps.edn', 'bb.edn') }}
           restore-keys: cljdeps-
+
+      - name: Run tests
+        run: bb test

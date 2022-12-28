@@ -29,6 +29,10 @@
                                 :operationsSorter "alpha"}})}}]
 
    ["/api"
+    ["/images"
+     {:get {:handler (fn [_]
+                       {:status 200
+                        :body  (images/list-images system-map)})}}]
     ["/images/upload"
      ;; this [:parameters :multipart] is required for multipart middleware
      {:post {:parameters {:multipart {}}

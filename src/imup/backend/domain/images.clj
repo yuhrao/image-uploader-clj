@@ -2,7 +2,6 @@
   (:require [clojure.java.io :as io]
             [xtdb.api :as xtdb]))
 
-
 (defn upload [{node :xtdb/node
                :as  sys-map} file-data]
   (let [assets-path (-> sys-map
@@ -30,3 +29,17 @@
        :path (:image/path db-entity)
        :name (:image/name db-entity)
        :type (:image/type db-entity)})))
+
+(defn list-images [{node :xtdb/node}]
+  (let [db (xtdb/db node)]
+    (->> (xtdb/q db '{:find  [(pull ?e [:xt/id
+                                        :image/name
+                                        :image/type
+                                        :image/path])]
+                      :where [[?e :xt/id _]]})
+         (mapcat identity)
+         (mapv (fn [img]
+                 (clojure.set/rename-keys img {:xt/id      :id
+                                               :image/name :name
+                                               :image/path :path
+                                               :image/type :type}))))))

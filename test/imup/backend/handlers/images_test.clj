@@ -3,12 +3,11 @@
     [clj-http.client :as http]
     [clojure.data.json :as json]
     [clojure.java.io :as io]
+    [clojure.string :as string]
     [clojure.test :as t]
     [test-utils :as test-utils]
-    [xtdb.api :as xtdb]
-    [clojure.string :as string])
+    [xtdb.api :as xtdb])
   (:import (org.apache.http.entity.mime HttpMultipartMode)))
-
 
 (t/use-fixtures :each test-utils/system-fixture)
 
@@ -63,3 +62,40 @@
         (t/is (true? (-> full-asset-path
                          io/file
                          .exists)))))))
+
+(defn create-image [{node :xtdb/node} {img-name :name
+                                       img-type :type}]
+  (xtdb/submit-tx
+    node
+    [[::xtdb/put {:xt/id        (random-uuid)
+                  :image/name   img-name
+                  :image/type   img-type
+                  :image/path   (str "/assets/" img-name)
+                  :image/width  (rand-int 1000)
+                  :image/height (rand-int 1000)}]]))
+(t/deftest list-images
+
+  (let [server-host (str "http://localhost:"
+                         (-> test-utils/*test-system*
+                             :server/opts
+                             :port))
+
+        samples [{:name "image1.jpg"
+                  :type "image/jpeg"}
+                 {:name "image2.png"
+                  :type "image/png"}
+                 {:name "image3.gif"
+                  :type "image/gif"}]
+        _ (doseq [sample samples]
+            (create-image test-utils/*test-system* sample))
+
+        {:keys [status body]}
+        (-> (http/get (str server-host "/api/images"))
+            (update :body (fn [b] (when-not (empty? b)
+                                    (json/read-str b :key-fn keyword)))))]
+
+    (tap> {:sample samples
+           :body   body})
+    (t/is (= 200 status))
+    (t/is (= (count samples) (count body)))
+    (t/is (every? #(contains? % :id) body))))
